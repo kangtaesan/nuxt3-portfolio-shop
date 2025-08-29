@@ -32,12 +32,14 @@
 <script setup lang="ts">
 import { useAuth } from '@/composables/useAuth'
 import { useAuthStore } from '@/store/auth'
+import { useApi } from '@/composables/useApi'
 import FindResetPopup from '@/components/FindResetPopup.vue'
 
 
 const username = ref('')
 const password = ref('')
 const { login } = useAuth()
+const { get } = useApi()
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
@@ -45,8 +47,8 @@ const showPassword = ref(false)
 
 const handleLogin = async () => {
     try {
-        const { user, token } = await login(username.value, password.value)
-
+        const { token } = await login(username.value, password.value)
+        const { user } = await get('/api/auth/me')
         // 로그인 성공 시 store에 상태 저장
         authStore.setAuth(user, token)
 

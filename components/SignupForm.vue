@@ -7,7 +7,12 @@
             </div>
             <div>
                 <label for="password">PW: </label>
-                <input id="password" type="text" v-model="password">
+                <input id="password" type="password" v-model="password">
+            </div>
+            <div>
+                <label for="passwordConfirm">PW확인: </label>
+                <input id="passwordConfirm" type="password" v-model="passwordConfirm">
+
             </div>
             <div>
                 <label for="nickname">Nickname: </label>
@@ -21,6 +26,9 @@
             <span>(선택사항)</span>
             <PhoneVerification v-model:phone="phone" v-model:isPhoneVerified="isPhoneVerified"></PhoneVerification>
             <button type="submit" :disabled="!isEmailVerified">회원가입</button>
+            <p v-if="passwordConfirm && passwordConfirm !== password" class="error">
+                비밀번호가 일치하지 않습니다.
+            </p>
         </form>
     </div>
 
@@ -37,6 +45,7 @@ const { signup } = useAuth()
 
 const username = ref('')
 const password = ref('')
+const passwordConfirm = ref('')
 const nickname = ref('')
 
 const emailId = ref('')
@@ -101,6 +110,11 @@ onBeforeRouteLeave(() => {
 
 // 회원가입 처리 함수
 const handleSignup = async () => {
+    if (password.value !== passwordConfirm.value) {
+        alert('비밀번호가 일치하지 않습니다.')
+        return
+    }
+
     try {
         // 기존 username 대신 token 전달
         const result = await signup(
@@ -151,5 +165,10 @@ const handleSignup = async () => {
 form {
     max-width: 500px;
     margin: auto;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
 }
 </style>

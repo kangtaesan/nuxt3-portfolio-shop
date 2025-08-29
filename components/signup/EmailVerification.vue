@@ -48,10 +48,16 @@ const sendEmailVerification = async () => {
         alert(error.message || '이메일 인증 요청 실패')
         return
     }
+    const res = data?.value ?? data // (혹시 $fetch로 바뀌어도 안전)
+    if (!res?.token) {
+        alert('토큰 응답이 없습니다.')
+        return
+    }
 
     // 토큰 저장
-    verificationToken.value = data.token
+    verificationToken.value = res.token
     emailVerificationSent.value = true
+    isEmailVerified.value = false
     alert(data.message || '인증 메일이 전송되었습니다.')
 }
 

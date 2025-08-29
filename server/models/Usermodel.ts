@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true, trim: true, minlength: 6, maxlength: 100,},
   nickname: { type: String, trim: true, maxlength: 20,},
   email: { type: String, required: true, unique: true, trim: true, },
-  phone: { type: String, required: true, trim: true, /* unique: true, */ },
+  phone: { type: String, /* required: true, */ trim: true, /* unique: true, */ },
+  role: { type: String, enum: ['user', 'admin'], default: 'user', }
 }, { timestamps: true })
 // timestamps는 createdAt, updatedAt을 자동으로 생성해줌
 

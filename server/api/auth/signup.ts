@@ -1,5 +1,5 @@
 // server/api/auth/signup.ts
-import { defineEventHandler, readBody } from 'h3'
+import { defineEventHandler, readBody, sendError, createError, setResponseStatus } from 'h3'
 // h3: Nuxt 3의 백엔드 서버 엔진인 Nitro의 핵심 라이브러리, 서버 API 요청을 처리 목적
 import bcrypt from 'bcrypt'
 // npm install bcrypt npm install -D @types/bcrypt 
@@ -17,14 +17,14 @@ export default defineEventHandler(async (event) => {
     token: string // 이메일 인증 토큰
     phone?: string // 휴대폰 번호 (선택)
   }>(event)
-  const { username, password, nickname, token, phone } = body
+  const { username, password, nickname, token, phone } = body || {}
 
   // 1. 입력값 체크
   if (!username || !password || !nickname || !token) {
-    return {
+    return sendError(event, createError({
       statusCode: 400,
       message: '모든 필드를 입력해주세요.',
-    }
+    }))
   }
 
   try {
@@ -32,13 +32,13 @@ export default defineEventHandler(async (event) => {
     const payload = verifyToken(token)
 
     if (typeof payload === 'string' || !('email' in payload)) {
-      return {
+      return sendError(event, createError({
         statusCode: 400,
         message: '토큰 정보가 유효하지 않습니다.',
-      }
+      }))
     }
 
-    const { email } = payload
+    const { email } = payload as { email: string }
 
     // 3. 중복 사용자 체크
     const existsUser = await UserModel.findOne({ username })
@@ -81,7 +81,8 @@ export default defineEventHandler(async (event) => {
       email,
       phone,
     })
-
+    
+    setResponseStatus(event, 201)
     return {
       statusCode: 201,
       message: '회원가입이 완료되었습니다.',
@@ -95,18 +96,18 @@ export default defineEventHandler(async (event) => {
 
   } catch (error: any) {
     if (error.code === 11000) {
-      if (error.keyPattern?.username) {
-        return { statusCode: 409, message: '이미 존재하는 아이디입니다.' }
+      if (error?.keyPattern?.username) {
+        return sendError(event, createError({ statusCode: 409, message: '이미 존재하는 아이디입니다.' }))
       }
-      if (error.keyPattern?.nickname) {
-        return { statusCode: 410, message: '이미 존재하는 닉네임입니다.' }
+      if (error?.keyPattern?.nickname) {
+        return sendError(event, createError({ statusCode: 410, message: '이미 존재하는 닉네임입니다.' }))
+      }
+      if (error?.keyPattern?.email) {
+        return sendError(event, createError({ statusCode: 411, message: '이미 사용된 이메일입니다.' }))
       }
     }
-
-    return {
-      statusCode: 500,
-      message: '서버 오류: 회원가입 처리 중 문제가 발생했습니다.',
-    }
+    console.error('[signup] server error:', error)
+    return sendError(event, createError({ statusCode: 500, message: '서버 오류: 회원가입 처리 중 문제가 발생했습니다.' }))
   }
 })
   // MongoDB 스키마 유효성 검증 실패 에러 121

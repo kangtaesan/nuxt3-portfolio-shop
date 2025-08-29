@@ -38,6 +38,8 @@ export default defineEventHandler( async (event) => {
     const token = generateToken({
         id: user._id,
         username: user.username,
+        nickname: user.nickname,
+        email: user.email,
         role: user.role,
     })
     console.log('✅ 로그인 성공. 토큰:', token)
@@ -59,6 +61,7 @@ export default defineEventHandler( async (event) => {
       id: user._id,
       username: user.username,
       nickname: user.nickname,
+      email: user.email
     },
     token,
     }
@@ -71,6 +74,7 @@ export default defineEventHandler( async (event) => {
             id: user._id,
             username: user.username,
             nickname: user.nickname,
+            email: user.email
         }
     }
 })

@@ -2,10 +2,11 @@
     <header class="header">
         <nav class="wrapper">
             <NuxtLink to="/" class="logo">Portfolio</NuxtLink>
-            <!-- <NuxtLink to="/products">상품</NuxtLink> -->
+            <NuxtLink to="/products">상품</NuxtLink>
             <!-- 초기화 완료 후 렌더링 -->
             <div class="wrapper-links" v-if="initialized">
-                <!-- <NuxtLink to="/mypage">마이 페이지</NuxtLink> -->
+                <NuxtLink v-if="isAdmin" to="/admin">관리자 페이지</NuxtLink>
+                <NuxtLink to="/mypage">마이 페이지</NuxtLink>
                 <NuxtLink :to="loginLink" v-if="!isAuthenticated">
                     로그인
                 </NuxtLink>
@@ -24,8 +25,9 @@ const route = useRoute()
 const router = useRouter()
 
 const authStore = useAuthStore()
-const { isAuthenticated, initialized } = storeToRefs(authStore) // 반응형으로 isAuthenticated 추적
+const { isAuthenticated, isAdmin, initialized } = storeToRefs(authStore) // 반응형으로 isAuthenticated 추적
 const { logout } = authStore // 호출 시 로그인 상태 초기화
+
 
 const loginLink = computed(() => ({
     path: '/login',
@@ -41,9 +43,15 @@ const handleLogout = async () => {
 
 <style scoped>
 .header {
-    background-color: #f5f5f5;
+    background-color: #fff;
     padding: 16px 32px;
     border-bottom: 1px solid #ddd;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%);
+    width: 95%;
+    z-index: 10;
 }
 
 .wrapper {

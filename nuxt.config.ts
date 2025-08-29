@@ -13,7 +13,12 @@ export default defineNuxtConfig({
     // 클라이언트에서 접근 가능한 변수 (공개 가능)
     public: {
       baseURL: process.env.NUXT_PUBLIC_BASE_URL || 'http://localhost:3000',
-    }
+      
+      // Vercel Blob Storage 클라이언트 접근
+      blobReadOnlyToken: process.env.BLOB_READ_ONLY_TOKEN 
+    },
+    // 서버 전용 Vercel Blob Storage
+    blobToken: process.env.BLOB_READ_WRITE_TOKEN, 
   },
   plugins: ['~/composables/cookieAuth.client.ts'],
   app: {

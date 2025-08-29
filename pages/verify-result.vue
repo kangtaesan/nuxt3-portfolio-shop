@@ -26,7 +26,7 @@ onMounted(async () => {
     }
 
     try {
-        const result = await get(`/api/auth/email-verify?token=${token}`)
+        const result = await get(`/api/auth/signup/email-verify?token=${token}`)
         if (result.statusCode === 200) {
             localStorage.setItem('emailVerified', 'true')
             status.value = 'success'
