@@ -14,8 +14,8 @@
                 </div>
             </div>
             <div class="cta">
-                <button class="buy">BUY IT NOW</button>
-                <button class="cart">CART</button>
+                <button class="buy" @click="buyNow">BUY IT NOW</button>
+                <button class="cart" @click="addToCart">CART</button>
             </div>
         </div>
     </div>
@@ -24,14 +24,50 @@
 
 <script setup lang="ts">
 import type { Product } from '~/types/product'
+import type { CartItem } from '~/types/order'
+import { useCartStore } from '~/store/cart';
 
 const props = defineProps<{ product: Product | null }>()
 const product = computed(() => props.product)
 
 const opts = computed(() => product.value?.optionStocks ?? [])
+const hasOptions = computed(() => (opts.value?.length ?? 0) > 0) // 옵션 배열의 개수로 체크
 const selectedIdx = ref<number | null>(null)
+const selectedOpt = computed(() =>
+    selectedIdx.value != null ? opts.value[selectedIdx.value] : null
+)
+
 function onPick(i: number) {
     selectedIdx.value = selectedIdx.value === i ? null : i
+}
+const cart = useCartStore()
+async function addToCart() {
+    if (!product.value) return
+    if (hasOptions.value && !selectedOpt.value) {
+        alert('옵션을 선택하세요.')
+        return
+    }
+    const productData = product.value as any
+    const selectedOptData = selectedOpt.value as any
+    const item: CartItem = {
+        productId: String(productData._id),
+        name: productData.name,
+        price: Number(productData.price),
+        imageUrl: productData.image ?? productData.imageUrl ?? productData.imageurl,
+        optionName: selectedOptData?.label,
+        optionExtraPrice: 0,
+        quantity: 1,
+    }
+    cart.addOrIncrement(item)
+    await cart.saveCartNow()
+}
+async function buyNow() {
+    if (hasOptions.value && !selectedOpt.value) {
+        alert('옵션을 선택하세요.')
+        return
+    }
+    addToCart()
+    await navigateTo('/cart')
 }
 
 </script>
