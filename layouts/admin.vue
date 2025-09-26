@@ -35,7 +35,6 @@
 <style scoped>
 .admin {
     display: flex;
-    height: 90vh;
     margin-top: 65px;
 }
 
@@ -44,6 +43,8 @@
     background-color: #2c3e50;
     color: white;
     padding: 20px;
+    position: fixed;
+    height: 100%;
 }
 
 .sidebar ul {
@@ -67,5 +68,6 @@
 .admin-contents {
     flex: 1;
     padding: 20px;
+    margin-left: 260px;
 }
 </style>

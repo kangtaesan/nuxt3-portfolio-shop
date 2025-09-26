@@ -2,7 +2,7 @@
     <header class="header">
         <nav class="wrapper">
             <NuxtLink to="/" class="logo">Portfolio</NuxtLink>
-            <NuxtLink to="/products" class="products">상품</NuxtLink>
+            <NuxtLink to="/products" class="products">Products</NuxtLink>
             <!-- 초기화 완료 후 렌더링 -->
             <div class="wrapper-links" v-if="initialized">
                 <button class="icon-btn" type="button" @click="toggleSearch"

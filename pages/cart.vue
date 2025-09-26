@@ -8,8 +8,4 @@
 import CartForm from '@/components/CartForm.vue';
 </script>
 
-<style scoped>
-.cart-layout {
-    margin-top: 130px;
-}
-</style>
+<style scoped></style>

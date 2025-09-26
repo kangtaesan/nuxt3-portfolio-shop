@@ -8,8 +8,4 @@
 import PaycheckForm from '~/components/PaycheckForm.vue';
 </script>
 
-<style scoped>
-.paycheck-layout {
-    margin-top: 130px;
-}
-</style>
+<style scoped></style>

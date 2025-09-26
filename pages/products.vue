@@ -158,7 +158,7 @@ function go(n: number) {
 
 <style scoped>
 .products-container {
-    padding: 80px 40px 40px;
+    padding: 40px;
 }
 
 .toolbar {

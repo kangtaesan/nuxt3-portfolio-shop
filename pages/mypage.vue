@@ -33,7 +33,7 @@ const tab = ref<'orders' | 'profile'>('orders')
 <style scoped>
 .container {
     max-width: 960px;
-    margin: 70px auto 40px;
+    margin: 70px auto;
     padding: 0 16px;
 }
 

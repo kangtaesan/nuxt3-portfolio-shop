@@ -5,8 +5,4 @@
 <script>
 </script>
 
-<style scoped>
-div {
-    margin-top: 65px;
-}
-</style>
+<style scoped></style>

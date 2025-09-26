@@ -5,8 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import CsForm from '~/components/admin/CsForm.vue';
-definePageMeta({ middleware: 'admin', layout: 'admin' })
+import CsForm from '~/components/cs/CsForm.vue';
 </script>
 
 <style scoped></style>
