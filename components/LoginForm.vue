@@ -74,6 +74,21 @@ const togglePassword = () => {
     showPassword.value = !showPassword.value
 }
 
+
+onMounted(() => {
+    try {
+        const raw = sessionStorage.getItem('demoCreds')
+        if (!raw) return
+        const { id, pw } = JSON.parse(raw)
+
+        username.value = id || ''
+        password.value = pw || ''
+
+        // 1회용 → 바로 제거
+        sessionStorage.removeItem('demoCreds')
+
+    } catch { }
+})
 </script>
 
 <style scoped>
@@ -82,66 +97,135 @@ a {
     color: black;
 }
 
-form {
-    max-width: 500px;
-    margin: auto;
+.login {
+    min-height: 78vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7f8fa;
 }
 
-.login {
+.login .inner {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 28px 20px;
+    background: #fff;
+    border: 1px solid #eceff3;
+    border-radius: 16px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .06);
+}
+
+form {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: 12px;
+    margin: 0 auto;
+    max-width: 420px;
+}
+
+.username-wrapper,
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.username-wrapper input,
+.password-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 14px;
+    background: #fff;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease, background .2s ease;
+    box-sizing: border-box;
+}
+
+.username-wrapper input:focus,
+.password-input:focus {
+    border-color: #c7d2fe;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, .16);
+}
+
+.toggle-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    display: inline-flex;
     align-items: center;
-    height: 90vh;
-    background-color: #f9f9f9;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #6b7280;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+}
+
+.toggle-btn:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.login_btn {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 12px;
+    background: #111827;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: .1px;
+    cursor: pointer;
+    transition: opacity .15s ease, transform .05s ease, box-shadow .15s ease;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .08);
+}
+
+.login_btn:hover {
+    opacity: .95;
+}
+
+.login_btn:active {
+    transform: translateY(1px);
 }
 
 .links {
     margin: 10px auto 0;
     display: flex;
     justify-content: center;
-    gap: 8px;
-    max-width: 500px;
+    gap: 12px;
+    font-size: 14px;
+    color: #374151;
 }
 
+.links a,
 .links span {
+    text-decoration: none;
+    color: #374151;
+    padding: 4px 6px;
+    border-radius: 8px;
+    transition: background .15s ease, color .15s ease;
     cursor: pointer;
 }
 
-.username-wrapper {
-    width: 100%;
+.links a:hover,
+.links span:hover {
+    background: #f3f4f6;
+    color: #111827;
 }
 
-.username-wrapper input {
-    width: 100%;
-    box-sizing: border-box;
-}
+@media (max-width: 480px) {
+    .login .inner {
+        padding: 22px 18px 16px;
+        border-radius: 14px;
+    }
 
-.password-wrapper {
-    position: relative;
-    width: 100%;
-    display: flex;
-}
-
-.password-input {
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.toggle-btn {
-    position: absolute;
-    right: 1%;
-    top: 50%;
-    transform: translateY(-55%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 0.8rem;
-    color: #555;
-}
-
-.login_btn {
-    width: 100%;
-    margin-top: 5%;
+    .toggle-btn {
+        right: 6px;
+    }
 }
 </style>

@@ -30,7 +30,7 @@ body {
 .page-main {
     /* flex-grow 1 flex-shrink 0 flex-basis auto */
     flex: 1 0 auto;
-    padding: 72px 0 0;
+    padding: 62px 0 0;
 }
 
 .page>footer,

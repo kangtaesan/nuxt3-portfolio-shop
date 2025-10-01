@@ -35,27 +35,35 @@ export const useCartStore = defineStore('cart', {
             await saveCart(this.items)
         },
         addOrIncrement(newItem: CartItem) {
-            const line = this.items.find(
-                (x) => x.productId === newItem.productId && x.optionName === newItem.optionName
-            )
-            if(line) {
-                line.quantity += newItem.quantity
-            } else {
-                this.items.push({...newItem})
-            }
+          const line = this.items.find(
+            x => x.productId === newItem.productId
+              && (x.optionName ?? '') === (newItem.optionName ?? '')
+          )
+          if (line) {
+            line.quantity += newItem.quantity
+          } else {
+            this.items.push({ ...newItem })
+          }
+          this.saveCartDebounced()
         },
+        
         remove(target: CartItem) {
-            this.items = this.items.filter(
-              (x) => !(x.productId === target.productId && x.optionName === target.optionName)
-            )
+          this.items = this.items.filter(
+            x => !(x.productId === target.productId
+              && (x.optionName ?? '') === (target.optionName ?? ''))
+          )
+          this.saveCartDebounced()
         },
+        
         changeQty(target: CartItem, newQty: number) {
-            const line = this.items.find(
-              (x) => x.productId === target.productId && x.optionName === target.optionName
-            )
-            if (line) {
-              line.quantity = Math.max(1, newQty)
-            }
+          const line = this.items.find(
+            x => x.productId === target.productId
+              && (x.optionName ?? '') === (target.optionName ?? '')
+          )
+          if (line) {
+            line.quantity = Math.max(1, newQty)
+            this.saveCartDebounced()
+          }
         },
         clear() {
             this.items = []

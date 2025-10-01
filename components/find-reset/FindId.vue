@@ -74,7 +74,106 @@ const verifyCode = async () => {
 </script>
 
 <style scoped>
+.find-id {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+}
+
+.find-id h3 {
+    margin: 0 0 14px;
+    font-size: 18px;
+    line-height: 1.35;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.find-id>div+div {
+    margin-top: 10px;
+}
+
 .input-group {
-    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0;
+}
+
+.input-group>label {
+    flex: 0 0 130px;
+    font-size: 14px;
+    color: #475569;
+}
+
+.input-group>input,
+.find-id input[type="text"],
+.find-id input[type="email"],
+.find-id input[type="tel"] {
+    flex: 1 1 auto;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f8fafc;
+    font-size: 15px;
+    color: #0f172a;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.input-group>input::placeholder {
+    color: #9ca3af;
+}
+
+.input-group>input:focus {
+    background: #fff;
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, .08);
+}
+
+.find-id button {
+    flex: 0 0 auto;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid #111827;
+    border-radius: 12px;
+    background: #111827;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform .05s ease, background .15s ease, color .15s ease;
+}
+
+.find-id button:hover {
+    background: #0b0f1a;
+}
+
+.find-id button:active {
+    transform: translateY(1px);
+}
+
+.find-id button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+@media (max-width: 520px) {
+    .input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .input-group>label {
+        flex: none;
+    }
+
+    .find-id button {
+        width: 100%;
+    }
 }
 </style>

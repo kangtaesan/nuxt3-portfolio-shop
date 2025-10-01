@@ -23,6 +23,27 @@ export default defineNuxtConfig({
   plugins: ['~/composables/cookieAuth.client.ts'],
   app: {
     head: {
+      title: 'Portfolio',
+      htmlAttrs: { lang: 'ko' },
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'description', content: 'Nuxt3 기반 포트폴리오 웹 서비스' },
+
+        // Open Graph
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'Portfolio' },
+        { property: 'og:title', content: 'Portfolio' },
+        { property: 'og:description', content: 'Nuxt3 기반 포트폴리오 웹 서비스' },
+        { property: 'og:image', content: '/og-default.jpg' }, // public 폴더
+        { property: 'og:url', content: 'https://your-domain.com' },
+
+        // Twitter
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Portfolio' },
+        { name: 'twitter:description', content: 'Nuxt3 기반 포트폴리오 웹 서비스' },
+        { name: 'twitter:image', content: '/og-default.jpg' } // public 폴더
+      ],
       link: [
         {
           rel: 'stylesheet',
@@ -30,5 +51,5 @@ export default defineNuxtConfig({
         }
       ]
     }
-  }
+  },
 })

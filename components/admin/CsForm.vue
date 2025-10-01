@@ -292,8 +292,7 @@ function fmt(d: string) { try { return new Date(d).toLocaleString() } catch { re
 
 <style scoped>
 .admin-cs {
-    max-width: 980px;
-    margin: 24px auto 80px;
+    margin: 24px 0 80px;
     padding: 0 16px;
 }
 
@@ -306,7 +305,7 @@ function fmt(d: string) { try { return new Date(d).toLocaleString() } catch { re
 
 .title {
     font-size: 22px;
-    font-weight: 800;
+    font-weight: 600;
 }
 
 .tools {

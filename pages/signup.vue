@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-// @components : SignupForm.vue
+import SignupForm from '~/components/SignupForm.vue';
 </script>
 
 <style></style>

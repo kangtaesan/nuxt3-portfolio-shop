@@ -120,7 +120,136 @@ const updatePassword = async () => {
 </script>
 
 <style scoped>
-.input-group {
-    margin-bottom: 1rem;
+.reset-password {
+    width: 100%;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.reset-password *,
+.reset-password *::before,
+.reset-password *::after {
+    box-sizing: border-box;
+}
+
+.reset-password>div {
+    margin: 0 0 18px;
+}
+
+.reset-password h3 {
+    margin: 0 0 14px;
+    font-size: 18px;
+    line-height: 1.35;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.reset-password input[type="text"],
+.reset-password input[type="email"],
+.reset-password input[type="tel"],
+.reset-password input[type="password"] {
+    width: 100%;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f8fafc;
+    font-size: 15px;
+    color: #0f172a;
+    outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.reset-password input::placeholder {
+    color: #9ca3af;
+}
+
+.reset-password input:focus {
+    background: #fff;
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, .08);
+}
+
+.reset-password button {
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid #111827;
+    border-radius: 12px;
+    background: #111827;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform .05s ease, background .15s ease, color .15s ease;
+}
+
+.reset-password button:hover {
+    background: #0b0f1a;
+}
+
+.reset-password button:active {
+    transform: translateY(1px);
+}
+
+.reset-password button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.reset-password .input-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.reset-password .input-group>label {
+    flex: 0 0 130px;
+    font-size: 14px;
+    color: #475569;
+}
+
+.reset-password .input-group>input {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.reset-password .input-group>button {
+    flex: 0 0 auto;
+}
+
+.reset-password>div>input+button {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.reset-password>div input+input {
+    margin-top: 10px;
+}
+
+.reset-password>div input+input+button {
+    margin-top: 12px;
+    width: 100%;
+}
+
+@media (max-width: 520px) {
+    .reset-password .input-group {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .reset-password .input-group>label {
+        flex: none;
+    }
+
+    .reset-password .input-group>button {
+        width: 100%;
+    }
 }
 </style>

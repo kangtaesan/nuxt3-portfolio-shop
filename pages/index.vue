@@ -1,8 +1,10 @@
 <template>
-    <div>HOME입니다.</div>
+    <HomeForm></HomeForm>
 </template>
 
-<script>
+<script lang="ts">
+import HomeForm from '~/components/HomeForm.vue';
+
 </script>
 
 <style scoped></style>

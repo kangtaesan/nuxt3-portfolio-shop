@@ -35,11 +35,9 @@
 
 <script setup lang="ts">
 import { useCartStore } from '@/store/cart'
-import { useAuthStore } from '@/store/auth'
 import type { CartItem } from '@/types/order'
 
 const cart = useCartStore()
-const auth = useAuthStore()
 const items = computed(() => cart.items)
 
 // 동일 라인 식별 키 (productId + optionName)
@@ -68,6 +66,7 @@ const format = (n: number) => n.toLocaleString('ko-KR') + '원'
 
 async function goCheckout() {
     if (!items.value.length) return
+    await cart.saveCartNow()
     await navigateTo('/paycheck')
 }
 

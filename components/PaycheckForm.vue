@@ -312,6 +312,9 @@ button.ghost:disabled {
     border-radius: 10px;
     border: 0;
     cursor: pointer;
+    text-decoration: none;
+    color: #111;
+    font-size: 13px;
 }
 
 .btn.ghost {

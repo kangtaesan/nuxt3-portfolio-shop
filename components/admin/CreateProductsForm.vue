@@ -38,20 +38,22 @@
             <div><label>설명</label><textarea v-model="description" rows="3" /></div>
             <div class="stock">
                 <label>재고</label>
-                <input type="number" v-model.number="stock" min="0" :disabled="useOptions" />
-                <label><input type="checkbox" v-model="useOptions"></input></label>
+                <input type="number" v-model.number="stock" min="0" :disabled="useOptions || isSoldOut" />
+                <label><input type="checkbox" v-model="useOptions">옵션</input></label>
+                <div><label><input type="checkbox" v-model="isSoldOut" />품절</label></div>
             </div>
             <div v-if="useOptions" class="options">
                 <div v-for="(opt, i) in optionStocks" :key="i" class="option-row">
-                    <input placeholder="옵션명" v-model="opt.label" />
-                    <input type="number" min="0" v-model.number="opt.qty" />
-                    <button type="button" @click="removeOption(i)">삭제</button>
+                    <input placeholder="옵션명" v-model="opt.label" :disabled="isSoldOut" />
+                    <input type="number" min="0" v-model.number="opt.qty" :disabled="isSoldOut" />
+                    <button type="button" @click="removeOption(i)" :disabled="isSoldOut">삭제</button>
                 </div>
-                <button type="button" @click="addOption">+ 옵션 추가</button>
+                <button type="button" @click="addOption" :disabled="isSoldOut">+ 옵션 추가</button>
             </div>
-            <div><label><input type="checkbox" v-model="isSoldOut" /> 품절</label></div>
-            <button type="submit">등록</button>
-            <NuxtLink to="/admin/products">취소</NuxtLink>
+            <div class="btn">
+                <button type="submit">등록</button>
+                <NuxtLink to="/admin/products">취소</NuxtLink>
+            </div>
         </form>
     </div>
 </template>
@@ -243,42 +245,185 @@ const handleCreate = async () => {
 </script>
 
 <style scoped>
-.image {
+.wrap {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    color: #1f2937;
+}
+
+.wrap h2 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 10px 0 16px;
+}
+
+.wrap form>div {
     display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.wrap form>div>label {
+    display: flex;
+    align-items: center;
+}
+
+.wrap label {
+    min-width: 92px;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.wrap input,
+.wrap textarea {
+    flex: 1 1 auto;
+    padding: 10px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: box-shadow .15s ease, border-color .15s ease;
+}
+
+.wrap input:focus,
+.wrap textarea:focus {
+    border-color: #c7d2fe;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, .15);
+}
+
+.wrap input:disabled,
+.wrap textarea:disabled {
+    background: #f3f4f6;
+    color: #9ca3af;
+    border-color: #e5e7eb;
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: .9;
+}
+
+.wrap input:disabled::placeholder,
+.wrap textarea:disabled::placeholder {
+    color: #b6bcc6;
+}
+
+.wrap button {
+    background: #111827;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
+    transition: opacity .15s ease, transform .05s ease;
+}
+
+.wrap button:hover {
+    opacity: .95;
+}
+
+.wrap button:active {
+    transform: translateY(1px);
+}
+
+.wrap button:disabled {
+    background: #e5e7eb;
+    color: #9aa3af;
+    border: 1px solid #e5e7eb;
+    cursor: not-allowed;
+    box-shadow: none;
+    opacity: .9;
+    transform: none;
+}
+
+.wrap a {
+    color: #374151;
+    text-decoration: none;
+    padding: 9px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    margin-left: 6px;
+    transition: background .2s ease, border-color .2s ease;
+}
+
+.wrap a:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.image {
+    align-items: center;
+    gap: 12px;
 }
 
 .upload-box {
     position: relative;
-    width: 100px;
-    height: 100px;
-    border: 2px dashed #ccc;
+    width: 160px;
+    height: 160px;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    background: #fafafa;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     overflow: hidden;
-
+    transition: border-color .15s ease, background .2s ease;
 }
 
-.upload-box:hover .preview {
-    filter: blur(2px);
-    opacity: 0.6;
-    background: white;
-}
-
-
-.upload-box:hover .delete-btn {
-    display: flex;
+.upload-box:hover {
+    border-color: #9ca3af;
+    background: #fff;
 }
 
 .preview {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: filter .2s ease, opacity .2s ease;
+}
+
+.upload-box:hover .preview {
+    filter: blur(2px);
+    opacity: .6;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, .92);
+    color: #000;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    font-weight: 700;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, .08);
+}
+
+.upload-box:hover .delete-btn {
+    display: flex;
 }
 
 .hidden {
     display: none;
+}
+
+.detailImage {
+    align-items: center;
 }
 
 .detail-upload {
@@ -289,52 +434,155 @@ const handleCreate = async () => {
 
 .detail-upload-box {
     position: relative;
-    width: 100px;
-    height: 100px;
-    border: 2px dashed #ccc;
+    width: 120px;
+    height: 120px;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    background: #fafafa;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     overflow: hidden;
+    transition: border-color .15s ease, background .2s ease;
+}
+
+.detail-upload-box:hover {
+    border-color: #9ca3af;
+    background: #fff;
 }
 
 .detail-preview {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    transition: filter 0.2s ease, opacity 0.2s ease;
+    transition: filter .2s ease, opacity .2s ease;
 }
 
-/* hover 시 흰색 뿌연 효과 */
 .detail-upload-box:hover .detail-preview {
     filter: blur(2px);
-    opacity: 0.6;
-    background: white;
+    opacity: .6;
 }
 
-/* 삭제 버튼 - 중앙 정렬 */
-.delete-btn {
+.detail-upload-box:hover .delete-btn {
+    display: flex;
+}
+
+.image i,
+.detail-upload-box i {
+    font-size: 22px;
+    color: #9ca3af;
+}
+
+label>input {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.9);
-    color: #000;
-    border: none;
-    border-radius: 50%;
-    width: 28px;
-    height: 28px;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: bold;
-    display: none;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+label:has(> input) {
+    display: inline-flex;
     justify-content: center;
+    align-items: center;
+    gap: 6px;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    color: #111827;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+}
+
+label:has(> input:checked) {
+    background: #111827;
+    color: #fff;
+    border-color: #111827;
+}
+
+.stock {
     align-items: center;
 }
 
-/* hover 시 버튼 보이기 */
-.detail-upload-box:hover .delete-btn {
+.stock input {
+    max-width: 180px;
+}
+
+.stock label:has(> input) {
+    margin-left: 10px;
+}
+
+.options {
     display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    align-items: flex-start;
+    margin-left: 104px;
+}
+
+.option-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+}
+
+.option-row input {
+    width: 220px;
+}
+
+.option-row input+input {
+    width: 120px;
+}
+
+.option-row button {
+    background: #fff;
+    color: #111827;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease, opacity .15s ease;
+    box-shadow: none;
+}
+
+.option-row button:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.options>button {
+    align-self: flex-start;
+    background: #fff;
+    color: #111827;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 9px 14px;
+    cursor: pointer;
+    transition: background .15s ease, border-color .15s ease;
+    box-shadow: none;
+}
+
+.options>button:hover {
+    background: #f3f4f6;
+    border-color: #d1d5db;
+}
+
+.btn {
+    font-size: 13px;
+    font-weight: 400;
+    gap: 6px !important;
+    margin-top: 50px;
+}
+
+.btn>button {
+    font-weight: 400 !important;
 }
 </style>

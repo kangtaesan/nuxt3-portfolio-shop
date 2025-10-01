@@ -1,13 +1,12 @@
 <template>
-    <div>
-        <NuxtLink to="/admin/create-products">
-            <button>상품 등록</button>
-        </NuxtLink>
-        <div class="product-list">
+    <div class="product-list">
+        <div class="top">
             <p>상품 목록</p>
-            <ProductList :products="products"></ProductList>
+            <NuxtLink to="/admin/create-products">
+                <button>상품 등록</button>
+            </NuxtLink>
         </div>
-
+        <ProductList :products="products"></ProductList>
     </div>
 </template>
 
@@ -30,6 +29,33 @@ products.value = fetched.value // fetched는 Ref<Product[]>
 
 <style scoped>
 .product-list {
-    padding: 24px 40px;
+    margin: 24px 0 80px;
+    padding: 0 16px;
+}
+
+.product-list .top {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.product-list .top p {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.product-list .top button {
+    background: #111827;
+    color: #fff;
+    border-color: #111827;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.product-list .top button:hover {
+    opacity: .95;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, .03);
 }
 </style>

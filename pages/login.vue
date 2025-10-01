@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-// @components : LoginForm.vue
+import LoginForm from '~/components/LoginForm.vue';
 
 </script>
 

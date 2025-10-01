@@ -109,13 +109,12 @@ const handleLogout = async () => {
 <style scoped>
 .header {
     background-color: #fff;
-    padding: 16px 32px;
     border-bottom: 1px solid #ddd;
     position: fixed;
     top: 0;
     left: 50%;
     transform: translate(-50%);
-    width: 95%;
+    width: 100%;
     z-index: 10;
 }
 
@@ -124,6 +123,7 @@ const handleLogout = async () => {
     grid-template-columns: auto 1fr auto;
     align-items: center;
     gap: 12px;
+    padding: 16px 32px;
 }
 
 .logo {

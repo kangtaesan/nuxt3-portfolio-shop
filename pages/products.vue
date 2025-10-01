@@ -36,7 +36,6 @@
 </template>
 
 <script setup lang="ts">
-// 그대로 사용
 import ProductList from '@/components/ProductsList.vue'
 import { fetchProductList } from '@/composables/useProducts'
 import { useRoute, useRouter } from 'vue-router'
