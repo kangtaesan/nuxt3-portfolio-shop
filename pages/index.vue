@@ -2,7 +2,7 @@
     <HomeForm></HomeForm>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import HomeForm from '~/components/HomeForm.vue';
 
 </script>
