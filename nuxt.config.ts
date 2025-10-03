@@ -60,10 +60,10 @@ export default defineNuxtConfig({
     '/api/cs/notice/**': {cache:{maxAge:120, swr: true}},
     '/api/settings/**': {cache:{maxAge:300, swr: true}},
     // PAGE: ISR(HTML 주기적으로 재생성)
-    '/': {isr: 60}, 
-    '/products': {isr: 60}, 
-    '/products/**': {isr: 60}, 
-    '/details/**': {isr: 60}, 
+    // '/': {isr: 60}, 
+    // '/products': {isr: 60}, 
+    // '/products/**': {isr: 60}, 
+    // '/details/**': {isr: 60}, 
     // 기본 SSR
     '/login':          { prerender: false },
     '/signup':         { prerender: false },
