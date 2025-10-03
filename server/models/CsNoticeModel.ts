@@ -5,7 +5,6 @@ const { Schema } = mongoose
 const CsNoticeSchema = new Schema({
   title:   { type: String, required: true, trim: true },
   message: { type: String, required: true, trim: true },
-  enabled: { type: Boolean, default: true, index: true },
 }, { timestamps: true }) // createdAt, updatedAt
 
 // 최신순 정렬에 유리
