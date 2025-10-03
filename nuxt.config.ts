@@ -52,4 +52,27 @@ export default defineNuxtConfig({
       ]
     }
   },
+  routeRules: {
+    // maxAge: 설정시간 동안 db 안찍고 캐시로 응답
+    // swr: maxAge 설정시간 지나도 캐시를 즉시 내보내고 뒤에서 갱신
+    // API GET만 캐시
+    '/api/products/**': {cache:{maxAge:60, swr: true}},
+    '/api/cs/notice/**': {cache:{maxAge:120, swr: true}},
+    '/api/settings/**': {cache:{maxAge:300, swr: true}},
+    // PAGE: ISR(HTML 주기적으로 재생성)
+    '/': {isr: 60}, 
+    '/products': {isr: 60}, 
+    '/products/**': {isr: 60}, 
+    '/details/**': {isr: 60}, 
+    // 기본 SSR
+    '/login':          { prerender: false },
+    '/signup':         { prerender: false },
+    '/orders/**':      { prerender: false },
+    '/cart':           { prerender: false },
+    '/mypage':         { prerender: false },
+    '/verify-result':  { prerender: false },
+    '/paycheck':       { prerender: false },
+    '/cs/**':          { prerender: false },
+    '/admin/**':       { prerender: false },
+  }
 })

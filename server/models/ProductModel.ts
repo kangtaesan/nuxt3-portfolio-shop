@@ -21,6 +21,8 @@ const productSchema = new mongoose.Schema({
         default: [],
       },
 })
+productSchema.index({ createdAt: -1 })   
+productSchema.index({ category: 1, createdAt: -1 }) 
 
 // Mongoose 핫 리로딩 시 에러 방지 구문 - Nuxt3 개발 시 mongoose.model()이 여러 번 호출되면 에러
 export default mongoose.models.Product || mongoose.model('Product', productSchema)

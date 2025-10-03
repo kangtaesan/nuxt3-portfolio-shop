@@ -38,7 +38,7 @@ const CsSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
-
+CsSchema.index({ userId: 1, createdAt: -1 })
 // 검색 인덱스
 // CsSchema.index({ title: 'text', content: 'text', nickname: 'text' })
 

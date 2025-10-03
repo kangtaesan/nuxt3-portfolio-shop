@@ -26,4 +26,8 @@ const CartItemSchema = new mongoose.Schema({
     note:          { type: String, default: '' },
   }, { timestamps: true });
   
+  OrderSchema.index({ userId: 1, createdAt: -1 })
+  OrderSchema.index({ status: 1, createdAt: -1 })
+  OrderSchema.index({ createdAt: -1 })
+
   export default mongoose.models.Order || mongoose.model('Order', OrderSchema)
