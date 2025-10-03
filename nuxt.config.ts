@@ -65,14 +65,14 @@ export default defineNuxtConfig({
     // '/products/**': {isr: 60}, 
     // '/details/**': {isr: 60}, 
     // 기본 SSR
-    '/login':          { prerender: false },
-    '/signup':         { prerender: false },
-    '/orders/**':      { prerender: false },
-    '/cart':           { prerender: false },
-    '/mypage':         { prerender: false },
-    '/verify-result':  { prerender: false },
-    '/paycheck':       { prerender: false },
-    '/cs/**':          { prerender: false },
-    '/admin/**':       { prerender: false },
+    // '/login':          { prerender: false },
+    // '/signup':         { prerender: false },
+    // '/orders/**':      { prerender: false },
+    // '/cart':           { prerender: false },
+    // '/mypage':         { prerender: false },
+    // '/verify-result':  { prerender: false },
+    // '/paycheck':       { prerender: false },
+    // '/cs/**':          { prerender: false },
+    // '/admin/**':       { prerender: false },
   }
 })
