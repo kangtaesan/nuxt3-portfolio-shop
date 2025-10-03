@@ -1,41 +1,44 @@
 // server/utils/mongoose.ts
 import mongoose from 'mongoose'
 
-declare global {
-  // 캐시: warm 워커에서 재사용
-  // eslint-disable-next-line no-var
-  var _mongooseConn: typeof mongoose | null | undefined
-  // eslint-disable-next-line no-var
-  var _mongooseInitPromise: Promise<typeof mongoose> | null | undefined
-}
+const MONGO_URI = process.env.MONGODB_URI
+if (!MONGO_URI) throw new Error('MONGODB_URI is missing')
+const uri: string = MONGO_URI
 
-const uri = process.env.NUXT_MONGO_URI as string
+// 전역 캐시(서버리스에서 요청마다 재사용)
+type G = typeof globalThis & {
+  _mongooseConn?: typeof mongoose | null
+  _mongooseInit?: Promise<typeof mongoose> | null
+}
+const g = globalThis as G
+g._mongooseConn ??= null
+g._mongooseInit ??= null
 
 export default async function connectDB() {
-  // 이미 연결되어 있으면 바로 반환
-  if (global._mongooseConn && mongoose.connection.readyState === 1) {
-    return global._mongooseConn
+  // 이미 연결돼 있으면 재사용
+  if (g._mongooseConn && mongoose.connection.readyState === 1) {
+    return g._mongooseConn
   }
+  // 연결 진행 중이면 그 프라미스 재사용
+  if (g._mongooseInit) return g._mongooseInit
 
-  // 초기화 중이면 그 프라미스 재사용 (동시 호출 중복 방지)
-  if (global._mongooseInitPromise) {
-    return global._mongooseInitPromise
-  }
-
+  // Mongoose 기본 동작 최적화
   mongoose.set('bufferCommands', false)
 
-  global._mongooseInitPromise = mongoose.connect(uri, {
-    maxPoolSize: 10,            // 과도한 커넥션 생성 방지
-    serverSelectionTimeoutMS: 5000,
-    socketTimeoutMS: 45000,
-    // keepAlive 등의 옵션을 URI 쿼리로 넣어도 됨
-  }).then((m) => {
-    global._mongooseConn = m
-    return m
-  }).finally(() => {
-    // 성공/실패 상관없이 초기화 큐는 비워줌
-    global._mongooseInitPromise = null
-  })
+  // “빨리 실패” 옵션: 무한 로딩 방지
+  g._mongooseInit = mongoose
+    .connect(uri, {
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 3000, // 3초 안에 서버 못 고르면 에러
+      socketTimeoutMS: 45000,
+    })
+    .then((m) => {
+      g._mongooseConn = m
+      return m
+    })
+    .finally(() => {
+      g._mongooseInit = null
+    })
 
-  return global._mongooseInitPromise
+  return g._mongooseInit
 }
