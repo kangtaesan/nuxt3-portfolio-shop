@@ -14,12 +14,11 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event)
   const title = String(body?.title ?? '').trim()
   const message = String(body?.message ?? '').trim()
-  const enabled = Boolean(body?.enabled ?? true)
 
   if (!title || !message) {
     throw createError({ statusCode: 400, message: '제목/내용을 입력하세요.' })
   }
 
-  const doc = await CsNotice.create({ title, message, enabled })
+  const doc = await CsNotice.create({ title, message })
   return { ok: true, id: String(doc._id) }
 })
